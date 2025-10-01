@@ -208,7 +208,7 @@ async def websocket_endpoint(websocket: WebSocket):
                     
                     try:
                         # Use gTTS (Google Text-to-Speech) with tld for faster speech
-                        tts = gTTS(text=ai_response, lang="en", slow=False, tld="com.au")
+                        tts = gTTS(text=ai_response, lang="en", slow=False, tld="ca")
                         tts.save(audio_output)
                         logger.info(f"✅ gTTS audio generated")
                     except Exception as tts_error:
