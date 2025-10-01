@@ -206,44 +206,18 @@ async def websocket_endpoint(websocket: WebSocket):
                     audio_output = os.path.join(temp_dir, f"output_{int(time.time())}.mp3")
                     logger.info(f"🔊 Generating TTS audio to: {audio_output}")
                     
-                    # Faster speech rate for lower latency
                     try:
-                        communicate = edge_tts.Communicate(ai_response, VOICE, rate="+25%")
-                        await communicate.save(audio_output)
+                        # Use gTTS (Google Text-to-Speech) with tld for faster speech
+                        tts = gTTS(text=ai_response, lang="en", slow=False, tld="com.au")
+                        tts.save(audio_output)
+                        logger.info(f"✅ gTTS audio generated")
                     except Exception as tts_error:
-                        logger.error(f"Edge TTS failed: {tts_error}")
-                        # Send error to client
+                        logger.error(f"gTTS failed: {tts_error}")
                         await websocket.send_json({
                             "type": "error",
-                            "message": "Text-to-speech service unavailable. Please check server logs."
+                            "message": "Text-to-speech unavailable"
                         })
                         continue
-                    
-                    for attempt in range(max_retries):
-                        try:
-                            communicate = edge_tts.Communicate(
-                                ai_response, 
-                                VOICE, 
-                                rate="+25%",
-                                proxy=None  # Explicitly disable proxy
-                            )
-                            await communicate.save(audio_output)
-                            break  # Success, exit retry loop
-                        except Exception as tts_err:
-                            logger.warning(f"TTS attempt {attempt + 1} failed: {tts_err}")
-                            if attempt == max_retries - 1:
-                                # Last attempt failed, create silent audio as fallback
-                                logger.error("All TTS attempts failed, using fallback")
-                                # Create a simple beep as fallback
-                                import subprocess
-                                subprocess.run([
-                                    "ffmpeg", "-f", "lavfi", "-i", 
-                                    "sine=frequency=800:duration=0.5", 
-                                    "-y", audio_output
-                                ], capture_output=True)
-                            else:
-                                await asyncio.sleep(1)  # Wait before retry
-                    
                     # Check if file was created
                     if not os.path.exists(audio_output):
                         raise Exception("TTS audio file was not created")
