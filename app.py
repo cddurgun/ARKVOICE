@@ -8,7 +8,7 @@ from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from groq import Groq
-from gtts import gTTS
+import edge_tts
 import logging
 from dotenv import load_dotenv
 import httpx
@@ -30,7 +30,7 @@ app.add_middleware(
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 PERPLEXITY_API_KEY = os.getenv("PERPLEXITY_API_KEY")
 groq_client = Groq(api_key=GROQ_API_KEY)
-# gTTS uses default Google voice
+VOICE = "en-US-JennyNeural"
 
 # Perplexity web search function
 async def search_web_perplexity(query: str) -> str:
@@ -207,12 +207,12 @@ async def websocket_endpoint(websocket: WebSocket):
                     logger.info(f"🔊 Generating TTS audio to: {audio_output}")
                     
                     try:
-                        # Use gTTS (Google Text-to-Speech) with tld for faster speech
-                        tts = gTTS(text=ai_response, lang="en", slow=False, tld="ca")
-                        tts.save(audio_output)
-                        logger.info(f"✅ gTTS audio generated")
+                        # Use Edge TTS (high quality, faster speech)
+                        communicate = edge_tts.Communicate(ai_response, "en-US-JennyNeural", rate="+25%")
+                        await communicate.save(audio_output)
+                        logger.info(f"✅ Edge TTS audio generated")
                     except Exception as tts_error:
-                        logger.error(f"gTTS failed: {tts_error}")
+                        logger.error(f"Edge TTS failed: {tts_error}")
                         await websocket.send_json({
                             "type": "error",
                             "message": "Text-to-speech unavailable"

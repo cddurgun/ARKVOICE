@@ -304,26 +304,15 @@ function ensureWebSocketOpen(timeoutMs = 5000) {
 }
 
 // Audio recording - Click to toggle conversational mode
-micButton.addEventListener('click', async (e) => {
-    e.preventDefault();
+micButton.addEventListener('click', async () => {
     console.log('🖱️ Mic button clicked, isActive:', isActive);
     
-    // Immediate visual feedback
-    micButton.style.opacity = '0.7';
-    setTimeout(() => { micButton.style.opacity = '1'; }, 200);
-    
-    try {
-        if (isActive) {
-            console.log('🛑 Deactivating...');
-            await deactivateConversation();
-        } else {
-            console.log('▶️ Activating...');
-            await activateConversation();
-        }
-    } catch (error) {
-        console.error('❌ Toggle error:', error);
-        statusText.textContent = '❌ Error: ' + error.message;
+    if (isActive) {
+        console.log('🛑 Deactivating...');
         await deactivateConversation();
+    } else {
+        console.log('▶️ Activating...');
+        await activateConversation();
     }
 });
 
@@ -848,24 +837,10 @@ function base64ToBlob(base64, mimeType) {
     return new Blob([byteArray], { type: mimeType });
 }
 
-// Cleanup on page unload
+// Cleanup on page unload - simplified
 window.addEventListener('beforeunload', () => {
-    console.log('🚪 Page unloading, cleaning up...');
-    if (isActive) {
-        try {
-            deactivateConversation();
-        } catch (e) {
-            console.warn('Deactivation error on unload:', e);
-        }
-    }
-    if (ws) {
-        try {
-            ws.close(1000, 'Page refresh');
-        } catch (e) {
-            console.warn('WebSocket close error on unload:', e);
-        }
-        ws = null;
-    }
+    console.log('🚪 Page unloading...');
+    // Let browser handle cleanup naturally
 });
 
 // Cleanup on visibility change (tab switch/minimize)
