@@ -8,7 +8,7 @@ from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from groq import Groq
-import edge_tts
+from gtts import gTTS
 import logging
 from dotenv import load_dotenv
 import httpx
@@ -30,7 +30,7 @@ app.add_middleware(
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 PERPLEXITY_API_KEY = os.getenv("PERPLEXITY_API_KEY")
 groq_client = Groq(api_key=GROQ_API_KEY)
-VOICE = "en-US-JennyNeural"
+# gTTS uses default Google voice
 
 # Perplexity web search function
 async def search_web_perplexity(query: str) -> str:
