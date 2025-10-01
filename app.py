@@ -275,4 +275,5 @@ if __name__ == "__main__":
     print("🌐 Server: http://localhost:8000")
     print("💰 Cost: $0.00")
     print("="*60)
-    uvicorn.run(app, host="0.0.0.0", port=8000, log_level="info")
+    port = int(os.getenv("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port, log_level="info")
