@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Groq Voice AI</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <canvas id="waveformCanvas"></canvas>
+    
+    <div class="container">
+        <div class="status">
+            <div class="status-dot" id="statusDot"></div>
+            <span id="statusText">Click mic to start VOICE AI</span>
+        </div>
+
+        <div class="mic-wrapper">
+            <div class="mic-glow" id="micGlow"></div>
+            <button class="mic-button" id="micButton">
+                <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                    <line x1="12" y1="19" x2="12" y2="23"></line>
+                    <line x1="8" y1="23" x2="16" y2="23"></line>
+                </svg>
+            </button>
+        </div>
+
+        <div class="transcript-box">
+            <div class="transcript-label">You said:</div>
+            <div id="transcriptText" class="transcript-text">...</div>
+        </div>
+
+        <div class="response-box">
+            <div class="response-label">AI Response:</div>
+            <div id="responseText" class="response-text">...</div>
+        </div>
+    </div>
+
+    <audio id="responseAudio" style="display: none;" preload="auto" crossorigin="anonymous"></audio>
+    
+    <!-- User interaction prompt for audio -->
+    <div id="audioPrompt" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.9); color: white; padding: 30px; border-radius: 20px; z-index: 9999; text-align: center;">
+        <h2>🔊 Enable Audio</h2>
+        <p>Click anywhere to enable voice responses</p>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>

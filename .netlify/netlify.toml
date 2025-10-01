@@ -1,0 +1,71 @@
+headersOrigin = "config"
+redirectsOrigin = "config"
+plugins = []
+functionsDirectory = "/Users/turkischleopard/CascadeProjects/groq-voice-ai/functions"
+functionsDirectoryOrigin = "config-v1"
+
+[dev]
+command = "python -m http.server 8000"
+port = 8000.0
+publish = "static"
+targetPort = 8000.0
+framework = "#custom"
+
+[functions]
+
+[functions."*"]
+
+[build]
+publish = "/Users/turkischleopard/CascadeProjects/groq-voice-ai/static"
+publishOrigin = "config"
+functions = "/Users/turkischleopard/CascadeProjects/groq-voice-ai/functions"
+
+[build.environment]
+PYTHON_VERSION = "3.9"
+NODE_VERSION = "18"
+
+[build.processing]
+
+[build.processing.css]
+
+[build.processing.html]
+
+[build.processing.images]
+
+[build.processing.js]
+
+[build.services]
+
+[[headers]]
+for = "/*"
+
+[headers.values]
+X-Frame-Options = "DENY"
+X-XSS-Protection = "1; mode=block"
+X-Content-Type-Options = "nosniff"
+Referrer-Policy = "strict-origin-when-cross-origin"
+Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' wss://*.groq.com https://*.groq.com https://*.microsoft.com; media-src 'self' data: blob:;"
+
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/api/*"
+to = "https://your-backend-url.herokuapp.com/:splat"
+status = 200.0
+force = true
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]

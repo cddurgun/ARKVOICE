@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Voice AI - HOLD to Record</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: white;
+        }
+        
+        .container {
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .status {
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+            padding: 1rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+        
+        #micButton {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255,255,255,0.2);
+            cursor: pointer;
+            font-size: 4rem;
+            transition: all 0.3s;
+            margin-bottom: 2rem;
+            user-select: none;
+        }
+        
+        #micButton:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.05);
+        }
+        
+        #micButton:active,
+        #micButton.recording {
+            background: #ef4444;
+            transform: scale(0.95);
+            box-shadow: 0 0 30px rgba(239, 68, 68, 0.6);
+        }
+        
+        .text-box {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            min-height: 60px;
+            text-align: left;
+        }
+        
+        .label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+        }
+        
+        .text-content {
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+        
+        .instruction {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎙️ Voice AI</h1>
+        
+        <div class="status" id="statusText">Loading...</div>
+        
+        <button id="micButton">🎤</button>
+        
+        <div class="instruction">
+            <strong>HOLD</strong> the microphone button to record<br>
+            <strong>RELEASE</strong> to send your message
+        </div>
+        
+        <div class="text-box">
+            <div class="label">Your Message:</div>
+            <div class="text-content" id="transcriptText">-</div>
+        </div>
+        
+        <div class="text-box">
+            <div class="label">AI Response:</div>
+            <div class="text-content" id="responseText">-</div>
+        </div>
+    </div>
+    
+    <audio id="responseAudio"></audio>
+    
+    <script src="/app-simple.js"></script>
+</body>
+</html>
